@@ -1,0 +1,61 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday — Games</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+
+<div class="nav">
+  <div class="inner container">
+    <div class="brand">🎂 Happy Birthday</div>
+    <nav class="row" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="wishes.html">Wishes</a>
+      <a href="games.html">Games</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</div>
+<script>
+// Highlight active link
+(function(){
+  const path = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#nav-links a').forEach(a=>{
+    if(a.getAttribute('href')===path){ a.classList.add('active'); }
+  });
+})();
+</script>
+
+<main class="container">
+  <section class="main-card">
+    <h1>🎮 Mini Games</h1>
+    <p class="subtitle">Just for fun—score is saved locally.</p>
+
+    <div class="card">
+      <h3>🎈 Balloon Pop</h3>
+      <p class="small">Click balloons to pop them within the time limit!</p>
+      <div class="row" style="margin:8px 0">
+        <button class="btn" id="start-balloons">Start</button>
+        <div class="small">Score: <span id="score">0</span> • Time: <span id="time">30</span>s • Best: <span id="best">0</span></div>
+      </div>
+      <canvas id="balloon-canvas" width="900" height="360" aria-label="Balloon game area"></canvas>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>🕯️ Blow the Candle</h3>
+      <p class="small">Click the flame rapidly to blow it out.</p>
+      <canvas id="candle" width="900" height="220"></canvas>
+      <div class="row" style="margin-top:8px">
+        <button class="btn" id="relight">Relight</button>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="shared.js"></script>
+<script src="games.js"></script>
+
+<div class="container footer">
+  Made with 💛 for <span id="bday-name-footer">Your Friend</span> — <span class="small">hosted on GitHub Pages</span>
+</div>
+
+</body></html>

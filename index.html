@@ -1,0 +1,66 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday — Home</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+
+<div class="nav">
+  <div class="inner container">
+    <div class="brand">🎂 Happy Birthday</div>
+    <nav class="row" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="wishes.html">Wishes</a>
+      <a href="games.html">Games</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</div>
+<script>
+// Highlight active link
+(function(){
+  const path = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#nav-links a').forEach(a=>{
+    if(a.getAttribute('href')===path){ a.classList.add('active'); }
+  });
+})();
+</script>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+<main class="container">
+  <section class="main-card">
+    <h1>Happy Birthday, <span id="bday-name">Your Friend</span>! 🎉</h1>
+    <p class="subtitle">A tiny multi‑page celebration with games, photos, and a wishes wall.</p>
+    <div class="row" style="margin:12px 0 20px">
+      <button class="btn" id="celebrate">Celebrate ✨</button>
+      <button class="btn secondary" id="toggle-music" aria-pressed="false">Play Music 🎵</button>
+    </div>
+    <div class="grid g3">
+      <div class="card">
+        <h3>📸 Memories</h3>
+        <p>Open the gallery and relive favorite moments.</p>
+        <a class="btn" href="gallery.html">Open Gallery</a>
+      </div>
+      <div class="card">
+        <h3>💌 Wishes</h3>
+        <p>Write a message that appears instantly on the wall.</p>
+        <a class="btn" href="wishes.html">Leave a Wish</a>
+      </div>
+      <div class="card">
+        <h3>🎈 Games</h3>
+        <p>Pop balloons or blow out candles—just for fun!</p>
+        <a class="btn" href="games.html">Play Now</a>
+      </div>
+    </div>
+    <p class="small" style="margin-top:14px">Tip: You can customize the name, colors, photos, and music.</p>
+  </section>
+</main>
+<audio id="bgm" preload="auto" src="assets/hbd.mp3"></audio>
+<script src="shared.js"></script>
+<script src="home.js"></script>
+
+<div class="container footer">
+  Made with 💛 for <span id="bday-name-footer">Your Friend</span> — <span class="small">hosted on GitHub Pages</span>
+</div>
+
+</body></html>

@@ -1,0 +1,53 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Birthday — Wishes</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+
+<div class="nav">
+  <div class="inner container">
+    <div class="brand">🎂 Happy Birthday</div>
+    <nav class="row" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="wishes.html">Wishes</a>
+      <a href="games.html">Games</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</div>
+<script>
+// Highlight active link
+(function(){
+  const path = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('#nav-links a').forEach(a=>{
+    if(a.getAttribute('href')===path){ a.classList.add('active'); }
+  });
+})();
+</script>
+
+<main class="container">
+  <section class="main-card">
+    <h1>💌 Wishes Wall</h1>
+    <p class="subtitle">Leave a message—it's stored in your browser (no server needed).</p>
+    <form id="wish-form" class="card" style="margin:10px 0 18px">
+      <label for="who">Your name</label>
+      <input id="who" placeholder="e.g., Alex" required />
+      <label for="msg">Your message</label>
+      <textarea id="msg" rows="3" placeholder="Write something sweet…" required></textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" type="submit">Post Wish</button>
+        <button class="btn secondary" id="clear-all" type="button">Clear All (local)</button>
+      </div>
+    </form>
+    <div id="wishes-list" class="grid g3"></div>
+  </section>
+</main>
+<script src="shared.js"></script>
+<script src="wishes.js"></script>
+
+<div class="container footer">
+  Made with 💛 for <span id="bday-name-footer">Your Friend</span> — <span class="small">hosted on GitHub Pages</span>
+</div>
+
+</body></html>
