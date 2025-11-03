@@ -23,19 +23,18 @@
   <main class="container">
     <section class="main-card center">
       <img class="hero-img" src="assets/happy_michuka.svg" alt="Happy Birthday Michuka">
-      <p class="subtitle">Blow out the candles with your voice (allow microphone access).</p>
+      <p class="subtitle">Blow out the candles with your voice. We’ll ask for microphone permission now.</p>
 
       <div class="cake-wrap">
         <canvas id="cake" width="720" height="380" aria-label="Interactive birthday cake"></canvas>
       </div>
 
       <div class="row" style="justify-content:center;margin-top:10px">
-        <button id="mic-btn" class="btn">Enable Microphone 🎤</button>
         <button id="relight" class="btn secondary">Relight Candles</button>
       </div>
 
       <div id="mic-status" class="small" style="text-align:center;margin-top:8px">
-        Microphone: <strong>off</strong>
+        Microphone: <strong>requesting…</strong>
       </div>
 
       <div class="row center-links" style="margin-top:18px">

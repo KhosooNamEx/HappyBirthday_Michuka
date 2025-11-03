@@ -1,13 +1,12 @@
 const canvas = document.getElementById('cake');
 const ctx = canvas.getContext('2d');
-const micBtn = document.getElementById('mic-btn');
 const relightBtn = document.getElementById('relight');
 const micStatus = document.getElementById('mic-status');
 
 let candles = 5;
 let flame = 1.0;            // 1 = full flame, 0 = out
-let audioActive = false;
 let analyser, data;
+let micEnabled = false;
 
 function drawCake(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -81,11 +80,11 @@ async function enableMic(){
     analyser.fftSize = 2048;
     data = new Float32Array(analyser.fftSize);
     src.connect(analyser);
-    audioActive = true;
+    micEnabled = true;
     micStatus.innerHTML = 'Microphone: <strong>on</strong>';
     listen();
   }catch(e){
-    alert('Microphone permission denied. You can still click the candles to blow them out.');
+    micStatus.innerHTML = 'Microphone: <strong>blocked</strong> — click on the cake to blow by tapping.';
   }
 }
 
@@ -108,8 +107,9 @@ relightBtn.addEventListener('click', ()=>{
   flame = 1.0;
 });
 
-micBtn.addEventListener('click', ()=>{
-  if(!audioActive){ enableMic(); }
+// Request mic on page load
+window.addEventListener('load', ()=>{
+  enableMic();
 });
 
 loop();
