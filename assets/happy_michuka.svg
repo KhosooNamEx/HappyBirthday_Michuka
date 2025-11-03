@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500">
+  <defs>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#fefefe"/>
+      <stop offset="1" stop-color="#cfd8ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="500" fill="url(#g)"/>
+  <g transform="translate(600,220)">
+    <text text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="72" fill="#11152a" font-weight="800">
+      Happy Birthday
+    </text>
+  </g>
+  <g transform="translate(600,320)">
+    <text text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-size="54" fill="#7aa2ff" font-weight="700">
+      Michuka
+    </text>
+  </g>
+  <g opacity="0.2">
+    <circle cx="120" cy="80" r="6" fill="#ff9ac6"/>
+    <circle cx="220" cy="420" r="6" fill="#7aa2ff"/>
+    <circle cx="980" cy="120" r="6" fill="#ffd77a"/>
+    <circle cx="1080" cy="360" r="6" fill="#7affd5"/>
+    <circle cx="600" cy="70" r="6" fill="#ffa0a0"/>
+  </g>
+</svg>
