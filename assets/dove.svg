@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200">
+  <defs>
+    <linearGradient id="body" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e8eef6"/>
+    </linearGradient>
+    <linearGradient id="wing" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#f6fbff"/>
+      <stop offset="1" stop-color="#dbe6f3"/>
+    </linearGradient>
+  </defs>
+  <!-- body -->
+  <ellipse cx="150" cy="110" rx="70" ry="42" fill="url(#body)" stroke="#c8d4e6" stroke-width="1.2"/>
+  <!-- head -->
+  <circle cx="215" cy="90" r="18" fill="url(#body)" stroke="#c8d4e6" stroke-width="1.2"/>
+  <circle cx="221" cy="88" r="3" fill="#1b1e2b"/>
+  <!-- beak -->
+  <path d="M233,90 l22,8 -22,8 z" fill="#f1b14a" stroke="#cc9542" stroke-width="1"/>
+  <!-- tail -->
+  <path d="M90,110 c-30,10 -40,20 -55,28 c18,6 34,8 53,6 c5,-6 10,-12 12,-25 z" fill="url(#wing)" stroke="#c8d4e6" stroke-width="1"/>
+  <!-- wings -->
+  <path d="M162,98 c-50,-56 -90,-66 -120,-58 c28,24 56,44 98,68" fill="url(#wing)" stroke="#c8d4e6" stroke-width="1.2"/>
+  <path d="M160,102 c-40,50 -86,70 -130,70 c40,-18 78,-34 122,-74" fill="url(#wing)" stroke="#c8d4e6" stroke-width="1.2"/>
+</svg>

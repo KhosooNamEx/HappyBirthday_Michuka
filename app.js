@@ -1,4 +1,4 @@
-// Single-page app: mic-blow cake -> reveal gallery with per-image wishes
+// Single-page app with white background + realistic doves
 const cfg = window.BDAY_CONFIG;
 const canvas = document.getElementById('cake');
 const ctx = canvas.getContext('2d');
@@ -6,30 +6,51 @@ const relightBtn = document.getElementById('relight');
 const micStatus = document.getElementById('mic-status');
 const gallerySection = document.getElementById('gallery');
 const hint = document.getElementById('reveal-hint');
+const dovesLayer = document.getElementById('doves-layer');
 
 let candles = 5;
 let flame = 1.0;            // 1 = full flame, 0 = out
 let analyser, data;
 let revealed = false;
 
+// --- Doves ---
+function spawnDoves(){
+  // Create 6 doves with varying top positions, durations, and delays
+  const count = 6;
+  for(let i=0;i<count;i++){
+    const d = document.createElement('div');
+    d.className = 'dove';
+    d.style.top = `${10 + i*12 + (Math.random()*6-3)}vh`;
+    d.style.animationDuration = `${24 + Math.random()*10}s`;
+    d.style.animationDelay = `${Math.random()*-20}s`; // negative = already in-flight
+    // Use embed SVG
+    const img = document.createElement('img');
+    img.src = 'assets/dove.svg';
+    img.alt = 'flying dove';
+    d.appendChild(img);
+    dovesLayer.appendChild(d);
+  }
+}
+
+// --- Cake drawing ---
 function drawCake(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   const cx = canvas.width/2, cy = canvas.height/2 + 40;
 
   // plate
-  ctx.fillStyle = '#e2e8ff';
+  ctx.fillStyle = '#e6ebff';
   ctx.beginPath();
   ctx.ellipse(cx, cy+70, 260, 26, 0, 0, Math.PI*2);
   ctx.fill();
 
   // cake body
-  ctx.fillStyle = '#f3d1c6';
+  ctx.fillStyle = '#fde3da';
   ctx.fillRect(cx-220, cy-40, 440, 130);
-  ctx.fillStyle = '#d9a79c';
+  ctx.fillStyle = '#e2bdb3';
   ctx.fillRect(cx-220, cy-40, 440, 22);
 
   // icing drips
-  ctx.fillStyle = '#fff4fb';
+  ctx.fillStyle = '#fff8fd';
   ctx.fillRect(cx-230, cy-64, 460, 34);
   for(let i=0;i<12;i++){
     const x = cx-210 + i*38;
@@ -119,6 +140,7 @@ relightBtn.addEventListener('click', ()=>{
 window.addEventListener('load', ()=>{
   enableMic();
   drawCake();
+  spawnDoves();
 });
 
 // ------- Gallery + per-image wishes -------
