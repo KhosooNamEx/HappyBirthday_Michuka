@@ -313,12 +313,29 @@ function startFireworks(){
   setTimeout(stopFireworks, 7000);
 }
 
-function stopFireworks(){
-  fwRunning = false;
-  if(fwRaf) cancelAnimationFrame(fwRaf);
+function startFireworks() {
+  if (fwRunning) return;
+  fwRunning = true;
+  fwCanvas.style.opacity = 1; // make visible
+  for (let i = 0; i < 6; i++) fireRocket();
+  fwRaf = requestAnimationFrame(stepFireworks);
+  setTimeout(() => {
+    stopFireworks();
+    // fade out + cleanup
+    fwCanvas.style.transition = "opacity 1s ease";
+    fwCanvas.style.opacity = 0;
+    setTimeout(clearFireworks, 1000);
+  }, 7000);
 }
 
-function clearFireworks(){
-  fwCtx.clearRect(0,0,fwCanvas.width,fwCanvas.height);
+function stopFireworks() {
+  fwRunning = false;
+  if (fwRaf) cancelAnimationFrame(fwRaf);
+}
+
+function clearFireworks() {
+  fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
   fwParticles.length = 0;
+  fwCanvas.style.transition = "";
+  fwCanvas.style.opacity = 1; // reset for next salute
 }

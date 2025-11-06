@@ -83,5 +83,7 @@ body{
   width: 100vw;
   height: 100vh;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease;
   z-index: 2; /* above doves, under navbar shadow */
 }
