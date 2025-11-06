@@ -9,6 +9,8 @@
 <body>
   <!-- Doves background layer -->
   <div class="doves" aria-hidden="true" id="doves-layer"></div>
+  <!-- Fireworks overlay -->
+  <canvas id="fireworks" class="fireworks" width="1920" height="1080" aria-hidden="true"></canvas>
 
   <header class="nav">
     <div class="inner container">
@@ -55,7 +57,7 @@
       <p class="subtitle">Wishes are read-only and loaded from <code>assets/wishes.xml</code> (or <code>wishes.txt</code> fallback).</p>
       <ul class="bullets">
         <li>Voice “blow” detection uses the Web Audio API (mic permission required).</li>
-        <li>Gallery reveals only after the candles go out.</li>
+        <li>Gallery reveals only after the candles go out, with a fireworks salute.</li>
         <li>Edit wishes by committing a new XML/TXT file — no edits from the web UI.</li>
       </ul>
     </section>
