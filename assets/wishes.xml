@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wishes>
-  <wish index="0"><who>Үзэсгэлэнт од</who><msg>Төрсөн өдрийн гал халуун мэнд хүргэе, чи бол энэ өдрийн жинхэнэ од! ✨. Үргэлж г</msg></wish>
+  <wish index="0"><who>Үзэсгэлэнт од</who><msg>Төрсөн өдрийн гал халуун мэнд хүргэе, чи бол энэ өдрийн жинхэнэ од! ✨. Үргэлж хамгийн тод нь байдаг шүү.</msg></wish>
   <wish index="1"><who>Хөөрхөнөө</who><msg>Амьдралын чинь зам мөр аз жаргал, амжилт, хайр, инээдээр дүүрэн байг. 💫</msg></wish>
-  <wish index="2"><who>Focused Mind</who><msg>Keep creating — the world needs your voice.</msg></wish>
-  <wish index="3"><who>Family</who><msg>遠くにいても、いつも一緒。お誕生日おめでとう！</msg></wish>
-  <wish index="4"><who>Friends</who><msg>To more road trips, late-night talks, and shared playlists.</msg></wish>
-  <wish index="5"><who>Team</who><msg>Wishing you momentum, mastery, and moments that matter.</msg></wish>
-  <wish index="6"><who>Secret Admirer</who><msg>Make a wish — I’ll be rooting for you. 💫</msg></wish>
-  <wish index="7"><who>Mentor</who><msg>Stay curious. The best chapters are still unwritten.</msg></wish>
-  <wish index="8"><who>Colleagues</who><msg>おめでとう！新しい挑戦、全力で応援します。</msg></wish>
-  <wish index="9"><who>You</who><msg>From me to you: keep going. You’re closer than you think.</msg></wish>
+  <wish index="2"><who>Өнөөдөр чиний өдөр</who><msg>Зүрхнийхээ гүнээс баяр хүргэе, чи миний өдөр бүрийн инээмсэглэл, амьдралын минь гэрэл. 💫</msg></wish>
+  <wish index="3"><who>Аз жаргал</who><msg>Чамгүй ертөнц хоосон мэт, харин чамтай хамт бүх зүйл утгатай болдог. 💫</msg></wish>
+  <wish index="4"><who>Инээмсэглэл</who><msg>Чиний инээмсэглэл надад өглөөний нар шиг гэрэл авчирдаг</msg></wish>
+  <wish index="5"><who>Love ya</who><msg>You are my favorite chapter in the story of my life. I’m so lucky to call you mine. ❤️</msg></wish>
+  <wish index="6"><who>Би чиний фен</who><msg>Үргэлж чамайг дэмждэг шүү. 💫</msg></wish>
+  <wish index="7"><who>My chaos and light</who><msg>You are my sunshine after every storm and my calm after every chaos. 🌤️</msg></wish>
+  <wish index="8"><who>Гэрэл гэгээ</who><msg>Би чамтай учирсандаа маш их баярлаж байна</msg></wish>
+  <wish index="9"><who>Үзэсгэлэн гоо</who><msg>Хамтдаа өнгөрүүлсэн мөч бүрийг би хамгийн үнэтэй бэлэг гэж боддог. 🎁</msg></wish>
 </wishes>
