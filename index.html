@@ -1,70 +1,50 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Happy Birthday — Michuka</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="doves" aria-hidden="true" id="doves-layer"></div>
-  <canvas id="fireworks" class="fireworks" width="1920" height="1080" aria-hidden="true"></canvas>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+<title>Happy Birthday — Michuka</title>
+<link rel="stylesheet" href="style.css" />
+</head><body>
+<div class="doves" aria-hidden="true" id="doves-layer"></div>
+<canvas id="fireworks" class="fireworks" aria-hidden="true"></canvas>
 
-  <header class="nav">
-    <div class="inner container">
-      <div class="brand">🎂 Happy Birthday</div>
-      <nav class="row" id="nav-links">
-        <a href="#top" class="active">Home</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#about">About</a>
-      </nav>
-    </div>
-  </header>
+<header class="nav"><div class="inner container">
+  <div class="brand">🎂 Happy Birthday</div>
+  <nav class="row" id="nav-links">
+    <a href="#top" class="active">Home</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#about">About</a>
+  </nav>
+</div></header>
 
-  <main id="top" class="container">
-    <section class="hero main-card">
-      <img class="hero-img" src="assets/happy_michuka.svg" alt="Happy Birthday Michuka">
-      <p class="subtitle">Blow out the candles with your voice. We’ll ask for microphone permission on load.</p>
+<main id="top" class="container">
+  <section class="hero main-card">
+    <img class="hero-img" src="assets/happy_michuka.svg" alt="Happy Birthday Michuka">
+    <p class="subtitle">Blow out the candles with your voice. Mic permission is requested on load.</p>
+    <div class="cake-wrap"><canvas id="cake" width="900" height="420" aria-label="Interactive birthday cake"></canvas></div>
+    <div id="mic-status" class="small center" style="margin-top:8px">Microphone: <strong>requesting…</strong></div>
+    <div class="row center-links" style="margin-top:18px"><button id="relight" class="btn secondary">Relight Candles</button></div>
+    <div id="reveal-hint" class="hint hidden">Make a wish… 🎉</div>
+  </section>
 
-      <div class="cake-wrap">
-        <canvas id="cake" width="900" height="420" aria-label="Interactive birthday cake"></canvas>
-      </div>
+  <section id="gallery" class="main-card hidden">
+    <h2>📸 Memories & Wishes for Michuka</h2>
+    <p class="subtitle">After blowing the candles, scroll through 10 memories with pre-written wishes 💌</p>
+    <div id="memories"></div>
+  </section>
 
-      <div id="mic-status" class="small center" style="margin-top:8px">
-        Microphone: <strong>requesting…</strong>
-      </div>
+  <section id="about" class="main-card">
+    <h2>About this page</h2>
+    <p class="subtitle">Wishes are read-only and loaded from <code>assets/wishes.xml</code> (or <code>wishes.txt</code> fallback). Fireworks fully clear on mobile.</p>
+    <ul class="bullets">
+      <li>Viewport-safe sizing for iOS/Android (uses <code>visualViewport</code> when available).</li>
+      <li>Hard-clear strategy resets the buffer to avoid half-screen residue.</li>
+    </ul>
+  </section>
+</main>
 
-      <div class="row center-links" style="margin-top:18px">
-        <button id="relight" class="btn secondary">Relight Candles</</button>
-      </div>
-      <div id="reveal-hint" class="hint hidden">Make a wish… 🎉</div>
-    </section>
-
-    <section id="gallery" class="main-card hidden">
-      <h2>📸 Memories & Wishes for Michuka</h2>
-      <p class="subtitle">After blowing the candles, scroll through 10 memories with pre-written wishes 💌</p>
-      <div id="memories"></div>
-    </section>
-
-    <section id="about" class="main-card">
-      <h2>About this page</h2>
-      <p class="subtitle">Wishes are read-only and loaded from <code>assets/wishes.xml</code> (or <code>wishes.txt</code> fallback).</p>
-      <ul class="bullets">
-        <li>Fireworks salute runs once, then fully disappears (no residue).</li>
-        <li>Voice “blow” detection uses the Web Audio API.</li>
-      </ul>
-    </section>
-  </main>
-
-  <script>
-    window.BDAY_CONFIG = {
-      NAME: "Michuka",
-      PHOTOS: [
-        "assets/photo1.jpg","assets/photo2.jpg","assets/photo3.jpg","assets/photo4.jpg","assets/photo5.jpg",
-        "assets/photo6.jpg","assets/photo7.jpg","assets/photo8.jpg","assets/photo9.jpg","assets/photo10.jpg"
-      ]
-    };
-  </script>
-  <script src="app.js"></script>
-</body>
-</html>
+<script>window.BDAY_CONFIG={NAME:"Michuka",PHOTOS:[
+"assets/photo1.jpg","assets/photo2.jpg","assets/photo3.jpg","assets/photo4.jpg","assets/photo5.jpg",
+"assets/photo6.jpg","assets/photo7.jpg","assets/photo8.jpg","assets/photo9.jpg","assets/photo10.jpg"
+]};</script>
+<script src="app.js"></script>
+</body></html>

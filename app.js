@@ -1,4 +1,4 @@
-// Fireworks full-clear fix + read-only wishes + doves + mic-blow cake
+// Mobile fireworks clear + viewport sizing + mic resume on touch
 const cfg = window.BDAY_CONFIG;
 const canvas = document.getElementById('cake');
 const ctx = canvas.getContext('2d');
@@ -8,26 +8,34 @@ const gallerySection = document.getElementById('gallery');
 const hint = document.getElementById('reveal-hint');
 const dovesLayer = document.getElementById('doves-layer');
 const fwCanvas = document.getElementById('fireworks');
-const fwCtx = fwCanvas.getContext('2d');
+const fwCtx = fwCanvas.getContext('2d', { alpha: true });
 
 let candles = 5;
-let flame = 1.0;            // 1 = full flame, 0 = out
-let analyser, data;
+let flame = 1.0;
+let analyser, data, audioCtx;
 let revealed = false;
 
-// --- DPR-aware sizing ---
+// Size fireworks canvas for mobile viewports
 function sizeFireworks(){
-  const dpr = Math.max(1, window.devicePixelRatio || 1);
-  fwCanvas.width = Math.floor(innerWidth * dpr);
-  fwCanvas.height = Math.floor(innerHeight * dpr);
+  const vv = window.visualViewport;
+  const cssW = Math.ceil((vv ? vv.width : window.innerWidth));
+  const cssH = Math.ceil((vv ? vv.height : window.innerHeight));
+  const dpr = Math.min(3, Math.max(1, window.devicePixelRatio || 1));
+  fwCanvas.style.width  = cssW + 'px';
+  fwCanvas.style.height = cssH + 'px';
+  fwCanvas.width  = Math.floor(cssW * dpr);
+  fwCanvas.height = Math.floor(cssH * dpr);
   fwCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
-window.addEventListener('resize', sizeFireworks);
-window.addEventListener('orientationchange', sizeFireworks);
-document.addEventListener('visibilitychange', () => { if (!document.hidden) sizeFireworks(); });
+const _resize = () => requestAnimationFrame(sizeFireworks);
+window.addEventListener('resize', _resize, {passive:true});
+window.addEventListener('orientationchange', _resize, {passive:true});
+if (window.visualViewport){
+  visualViewport.addEventListener('resize', _resize, {passive:true});
+  visualViewport.addEventListener('scroll', _resize, {passive:true});
+}
 sizeFireworks();
 
-// --- Doves ---
 function spawnDoves(){
   const count = 6;
   for(let i=0;i<count;i++){
@@ -44,65 +52,28 @@ function spawnDoves(){
   }
 }
 
-// --- Cake drawing ---
 function drawCake(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   const cx = canvas.width/2, cy = canvas.height/2 + 40;
-
-  // plate
-  ctx.fillStyle = '#e6ebff';
-  ctx.beginPath();
-  ctx.ellipse(cx, cy+70, 260, 26, 0, 0, Math.PI*2);
-  ctx.fill();
-
-  // cake body
-  ctx.fillStyle = '#fde3da';
-  ctx.fillRect(cx-220, cy-40, 440, 130);
-  ctx.fillStyle = '#e2bdb3';
-  ctx.fillRect(cx-220, cy-40, 440, 22);
-
-  // icing drips
-  ctx.fillStyle = '#fff8fd';
-  ctx.fillRect(cx-230, cy-64, 460, 34);
-  for(let i=0;i<12;i++){
-    const x = cx-210 + i*38;
-    ctx.beginPath();
-    ctx.moveTo(x, cy-30);
-    ctx.quadraticCurveTo(x+8, cy-10, x-4, cy-5);
-    ctx.lineTo(x-4, cy-30);
-    ctx.fill();
-  }
-
-  // candles
-  const spacing = 440/(candles+1);
-  let allOut = flame <= 0.02;
+  ctx.fillStyle = '#e6ebff'; ctx.beginPath(); ctx.ellipse(cx, cy+70, 260, 26, 0, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#fde3da'; ctx.fillRect(cx-220, cy-40, 440, 130);
+  ctx.fillStyle = '#e2bdb3'; ctx.fillRect(cx-220, cy-40, 440, 22);
+  ctx.fillStyle = '#fff8fd'; ctx.fillRect(cx-230, cy-64, 460, 34);
+  for(let i=0;i<12;i++){ const x=cx-210+i*38; ctx.beginPath(); ctx.moveTo(x,cy-30); ctx.quadraticCurveTo(x+8,cy-10,x-4,cy-5); ctx.lineTo(x-4,cy-30); ctx.fill(); }
+  const spacing = 440/(candles+1); let allOut = flame <= 0.02;
   for(let i=0;i<candles;i++){
     const x = cx - 220 + spacing*(i+1);
-    // body
-    ctx.fillStyle = '#9ad0ff';
-    ctx.fillRect(x-6, cy-60, 12, 36);
-    // wick
-    ctx.fillStyle = '#333';
-    ctx.fillRect(x-1, cy-66, 2, 8);
-    // flame
+    ctx.fillStyle = '#9ad0ff'; ctx.fillRect(x-6, cy-60, 12, 36);
+    ctx.fillStyle = '#333'; ctx.fillRect(x-1, cy-66, 2, 8);
     if(flame>0){
       const f = flame * (0.9 + Math.random()*0.2);
       const grad = ctx.createRadialGradient(x, cy-78, 2, x, cy-78, 14*f);
-      grad.addColorStop(0,'rgba(255,240,150,0.95)');
-      grad.addColorStop(1,'rgba(255,120,60,0)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(x, cy-78, 14*f, 0, Math.PI*2);
-      ctx.fill();
+      grad.addColorStop(0,'rgba(255,240,150,0.95)'); grad.addColorStop(1,'rgba(255,120,60,0)');
+      ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(x, cy-78, 14*f, 0, Math.PI*2); ctx.fill();
       allOut = false;
     }
   }
-
-  if(allOut && !revealed){
-    revealed = true;
-    revealGallery();
-    startFireworks();
-  }
+  if(allOut && !revealed){ revealed = true; revealGallery(); startFireworks(); }
   requestAnimationFrame(drawCake);
 }
 
@@ -111,9 +82,12 @@ function rms(buf){ let s=0; for(let i=0;i<buf.length;i++){ s += buf[i]*buf[i]; }
 async function enableMic(){
   try{
     const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-    const ac = new (window.AudioContext || window.webkitAudioContext)();
-    const src = ac.createMediaStreamSource(stream);
-    analyser = ac.createAnalyser();
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const resume = () => { if (audioCtx.state !== 'running') audioCtx.resume(); };
+    document.addEventListener('touchstart', resume, {once:true, passive:true});
+    document.addEventListener('click', resume, {once:true, passive:true});
+    const src = audioCtx.createMediaStreamSource(stream);
+    analyser = audioCtx.createAnalyser();
     analyser.fftSize = 2048;
     data = new Float32Array(analyser.fftSize);
     src.connect(analyser);
@@ -129,14 +103,14 @@ function listen(){
   if(level > 0.08){ flame = Math.max(0, flame - 0.12); }
   requestAnimationFrame(listen);
 }
-
 canvas.addEventListener('click', ()=>{ flame = Math.max(0, flame - 0.2); });
 
 relightBtn.addEventListener('click', ()=>{
   flame = 1.0; revealed = false;
   gallerySection.classList.add('hidden');
   hint.classList.add('hidden');
-  stopFireworks(); hardClearFireworks();
+  stopFireworks();
+  forceClearFireworks(); // strong clear for mobile
   window.scrollTo({top: 0, behavior: 'smooth'});
 });
 
@@ -175,16 +149,8 @@ async function loadWishes(){
 function cardTemplate(idx, src, left, wish){
   const sideA = left ? 'mem-img' : 'mem-wish';
   const sideB = left ? 'mem-wish' : 'mem-img';
-  const wishHTML = `
-    <div class="wish-text">${(wish?.msg || '').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
-    <div class="who">${wish?.who ? '— ' + wish.who : ''}</div>
-  `;
-  return `
-    <article class="mem-card" data-idx="${idx}">
-      <div class="${sideA}">${ left ? `<img src="${src}" alt="memory ${idx+1}">` : wishHTML }</div>
-      <div class="${sideB}">${ left ? wishHTML : `<img src="${src}" alt="memory ${idx+1}">` }</div>
-    </article>
-  `;
+  const wishHTML = `<div class="wish-text">${(wish?.msg || '').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div><div class="who">${wish?.who ? '— ' + wish.who : ''}</div>`;
+  return `<article class="mem-card" data-idx="${idx}"><div class="${sideA}">${ left ? `<img src="${src}" alt="memory ${idx+1}">` : wishHTML }</div><div class="${sideB}">${ left ? wishHTML : `<img src="${src}" alt="memory ${idx+1}">` }</div></article>`;
 }
 
 async function buildMemories(){
@@ -209,15 +175,15 @@ function revealGallery(){
   }, 350);
 }
 
-// -------- Fireworks system (with hard clear) --------
-let fwParticles = [];
-let fwRaf = 0;
-let fwRunning = false;
+// -------- Fireworks system (mobile robust) --------
+let fwParticles = []; let fwRaf = 0; let fwRunning = false;
 
 function fireRocket(){
-  const x = Math.random() * innerWidth;
-  const y = innerHeight + 10;
-  const peak = 100 + Math.random() * (innerHeight*0.4);
+  const vw = window.visualViewport ? visualViewport.width : innerWidth;
+  const vh = window.visualViewport ? visualViewport.height : innerHeight;
+  const x = Math.random() * vw;
+  const y = vh + 10;
+  const peak = 100 + Math.random() * (vh * 0.4);
   const hue = Math.floor(Math.random()*360);
   const vx = (Math.random()-0.5)*1.2;
   const vy = - (6 + Math.random()*2.5);
@@ -233,10 +199,7 @@ function explode(x, y, hue){
     fwParticles.push({
       type:'spark', x, y,
       vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed - 0.5,
-      life: 60 + Math.random()*40,
-      age: 0,
-      hue,
-      alpha: 1
+      life: 60 + Math.random()*40, age: 0, hue, alpha: 1
     });
   }
 }
@@ -247,29 +210,25 @@ function stepFireworks(){
   fwCtx.fillRect(0,0,fwCanvas.width,fwCanvas.height);
   fwCtx.globalCompositeOperation = 'lighter';
 
-  const g = 0.05;
-  const newList = [];
+  const g = 0.05, next=[];
   for(const p of fwParticles){
     if(p.type === 'rocket'){
       p.x += p.vx; p.y += p.vy; p.vy += 0.05;
       drawParticle(p.x, p.y, p.hue, 2, 0.9);
-      if(p.y < p.peak){ explode(p.x, p.y, p.hue); } else { newList.push(p); }
+      if(p.y < p.peak){ explode(p.x, p.y, p.hue); } else { next.push(p); }
     }else{
       p.x += p.vx; p.y += p.vy; p.vy += g; p.age++; p.alpha = Math.max(0, 1 - p.age / p.life);
-      if(p.alpha > 0){ drawParticle(p.x, p.y, p.hue, 2, p.alpha); newList.push(p); }
+      if(p.alpha > 0){ drawParticle(p.x, p.y, p.hue, 2, p.alpha); next.push(p); }
     }
   }
-  fwParticles = newList;
-
+  fwParticles = next;
   if(Math.random() < 0.2) fireRocket();
   if(fwRunning) fwRaf = requestAnimationFrame(stepFireworks);
 }
 
 function drawParticle(x, y, hue, radius, alpha){
-  fwCtx.beginPath();
-  fwCtx.arc(x, y, radius, 0, Math.PI*2);
-  fwCtx.fillStyle = `hsla(${hue}, 100%, 60%, ${alpha})`;
-  fwCtx.fill();
+  fwCtx.beginPath(); fwCtx.arc(x, y, radius, 0, Math.PI*2);
+  fwCtx.fillStyle = `hsla(${hue}, 100%, 60%, ${alpha})`; fwCtx.fill();
 }
 
 function startFireworks(){
@@ -278,29 +237,26 @@ function startFireworks(){
   fwCanvas.style.opacity = 1;
   for(let i=0;i<6;i++) fireRocket();
   fwRaf = requestAnimationFrame(stepFireworks);
-  setTimeout(()=>{
-    stopFireworks();
-    fwCanvas.style.opacity = 0;
-    setTimeout(hardClearFireworks, 900);
-  }, 7000);
+  setTimeout(()=>{ stopFireworks(); fwCanvas.style.opacity = 0; setTimeout(forceClearFireworks, 900); }, 7000);
 }
 
-function stopFireworks(){
-  fwRunning = false;
-  if(fwRaf) cancelAnimationFrame(fwRaf);
-}
+function stopFireworks(){ fwRunning = false; if(fwRaf) cancelAnimationFrame(fwRaf); }
 
-// Reset transform to identity then wipe buffer, then restore DPR transform
-function hardClearFireworks(){
-  try{
-    const dpr = Math.max(1, window.devicePixelRatio || 1);
-    fwCtx.setTransform(1,0,0,1,0,0);
-    fwCtx.globalCompositeOperation = 'copy';
-    fwCtx.fillStyle = 'rgba(0,0,0,0)';
-    fwCtx.fillRect(0,0,fwCanvas.width,fwCanvas.height);
-    fwCtx.setTransform(dpr,0,0,dpr,0,0);
-  }catch(e){
-    sizeFireworks();
-  }
+// Strong clear for mobile: reset buffer (width/height reset) then re-size
+function forceClearFireworks(){
+  const vv = window.visualViewport;
+  const cssW = Math.ceil((vv ? vv.width : window.innerWidth));
+  const cssH = Math.ceil((vv ? vv.height : window.innerHeight));
+  const dpr = Math.min(3, Math.max(1, window.devicePixelRatio || 1));
+  // Hard reset (clears everything on iOS)
+  fwCanvas.width = 1; fwCanvas.height = 1;
+  // Re-apply target size
+  fwCanvas.style.width  = cssW + 'px';
+  fwCanvas.style.height = cssH + 'px';
+  fwCanvas.width  = Math.floor(cssW * dpr);
+  fwCanvas.height = Math.floor(cssH * dpr);
+  fwCtx.setTransform(dpr,0,0,dpr,0,0);
   fwParticles.length = 0;
 }
+
+spawnDoves();
